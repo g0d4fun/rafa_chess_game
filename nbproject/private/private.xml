@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/board/Tile.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/pieces/Piece.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/gui/Table.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/player/BlackPlayer.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/pieces/Queen.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/board/Board.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/pieces/Knight.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/board/MoveUtils.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/pieces/King.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/gui/Resources.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/board/Move.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/pieces/Bishop.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/pieces/Rook.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/gui/UIConstants.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/player/WhitePlayer.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/pieces/Pawn.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/gui/Pictures.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/pieces/PieceUtils.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/player/Player.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/board/MoveTransition.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/Alliance.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/gui/BoardDirection.java</file>
+            <file>file:/C:/Users/rafa/OneDrive/ISEC/3Y1S_PROJECTS/AM/rafa_chess_game/src/rafa_chess_game/model/board/BoardUtils.java</file>
+        </group>
+    </open-files>
+</project-private>
