@@ -14,7 +14,7 @@ import java.awt.Dimension;
  */
 public interface UIConstants {
     
-    Dimension FRAME_DIMENSION = new Dimension(600, 600);
+    Dimension FRAME_DIMENSION = new Dimension(700, 600);
     int BOARD_DIM_X = 600;
     int BOARD_DIM_Y = 600;
     Dimension BOARD_DIMENSION = new Dimension(BOARD_DIM_X,BOARD_DIM_Y);

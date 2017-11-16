@@ -33,6 +33,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import rafa_chess_game.model.Model;
+import rafa_chess_game.model.MoveLog;
 import rafa_chess_game.model.board.Board;
 import rafa_chess_game.model.board.BoardUtils;
 import rafa_chess_game.model.board.Move;
@@ -49,6 +50,9 @@ public class Table implements UIConstants {
     public Model model;
     private JFrame gameFrame;
     protected BoardPanel boardPanel;
+    
+    private GameHistoryPanel gameHistoryPanel;
+    private PiecesTakenPanel piecesTakenPanel;
 
     private Tile sourceTile;
     private Tile destinationTile;
@@ -59,17 +63,21 @@ public class Table implements UIConstants {
     public Table() {
         setUpLookAndFeel();
         model = new Model();
+        model.startNewGame();
+        
         this.gameFrame = new JFrame("Chess Game");
         JMenuBar tableMenuBar = setUpMenuBar();
 
         this.gameFrame.setJMenuBar(tableMenuBar);
         this.gameFrame.setSize(FRAME_DIMENSION);
 
-        model.startNewGame();
-
+        this.gameHistoryPanel = new GameHistoryPanel();
+        this.piecesTakenPanel = new PiecesTakenPanel();
         this.boardPanel = new BoardPanel(BOARD_DIMENSION);
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
-
+        this.gameFrame.add(this.gameHistoryPanel,BorderLayout.EAST);
+        this.gameFrame.add(this.piecesTakenPanel,BorderLayout.WEST);
+        
         this.gameFrame.setResizable(false);
         this.gameFrame.setVisible(true);
 
@@ -274,6 +282,7 @@ public class Table implements UIConstants {
                             // secondClick 
                             destinationTile = model.getTile(tileId);
                             System.out.println("Move Status: " + model.makeMove(sourceTile, destinationTile));
+                            
                             sourceTile = null;
                             destinationTile = null;
                             humanMovedPiece = null;
@@ -284,6 +293,8 @@ public class Table implements UIConstants {
                         @Override
                         public void run() {
                             boardPanel.drawBoard(model.getBoard());
+                            gameHistoryPanel.redo(model.getBoard(), model.getMoveLog());
+                            piecesTakenPanel.redo(model.getMoveLog());
                         }
                     });
 
