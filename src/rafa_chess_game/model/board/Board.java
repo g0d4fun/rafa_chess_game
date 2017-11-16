@@ -3,7 +3,7 @@ package rafa_chess_game.model.board;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +23,8 @@ import rafa_chess_game.model.player.WhitePlayer;
 public final class Board {
 
     private final List<Tile> gameBoard;
-    private final Collection<Piece> whitePieces;
-    private final Collection<Piece> blackPieces;
+    private final List<Piece> whitePieces;
+    private final List<Piece> blackPieces;
     private final WhitePlayer whitePlayer;
     private final BlackPlayer blackPlayer;
     private final Player currentPlayer;
@@ -38,8 +38,8 @@ public final class Board {
         this.whitePieces = calculateActivePieces(builder, Alliance.WHITE);
         this.blackPieces = calculateActivePieces(builder, Alliance.BLACK);
         this.enPassantPawn = builder.enPassantPawn;
-        final Collection<Move> whiteStandardMoves = calculateLegalMoves(this.whitePieces);
-        final Collection<Move> blackStandardMoves = calculateLegalMoves(this.blackPieces);
+        final List<Move> whiteStandardMoves = calculateLegalMoves(this.whitePieces);
+        final List<Move> blackStandardMoves = calculateLegalMoves(this.blackPieces);
         this.whitePlayer = new WhitePlayer(this, whiteStandardMoves, blackStandardMoves);
         this.blackPlayer = new BlackPlayer(this, whiteStandardMoves, blackStandardMoves);
         this.currentPlayer = builder.nextMoveMaker.choosePlayerByAlliance(this.whitePlayer, this.blackPlayer);
@@ -67,11 +67,11 @@ public final class Board {
         return tile.toString();
     }
 
-    public Collection<Piece> getBlackPieces() {
+    public List<Piece> getBlackPieces() {
         return this.blackPieces;
     }
 
-    public Collection<Piece> getWhitePieces() {
+    public List<Piece> getWhitePieces() {
         return this.whitePieces;
     }
 
@@ -171,7 +171,7 @@ public final class Board {
         return Arrays.asList(tiles);
     }
 
-    private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
+    private List<Move> calculateLegalMoves(final List<Piece> pieces) {
         final List<Move> legalMoves = new ArrayList<>(35);
         for (final Piece piece : pieces) {
             legalMoves.addAll(piece.calculateLegalMoves(this));
@@ -179,7 +179,7 @@ public final class Board {
         return legalMoves;
     }
 
-    private static Collection<Piece> calculateActivePieces(final Builder builder,
+    private static List<Piece> calculateActivePieces(final Builder builder,
             final Alliance alliance) {
         final List<Piece> activePieces = new ArrayList<>(16);
         for (final Piece piece : builder.boardConfig.values()) {

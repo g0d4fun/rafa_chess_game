@@ -17,8 +17,8 @@ import rafa_chess_game.model.pieces.Rook;
 public final class WhitePlayer extends Player {
 
     public WhitePlayer(final Board board,
-                       final Collection<Move> whiteStandardLegals,
-                       final Collection<Move> blackStandardLegals) {
+                       final List<Move> whiteStandardLegals,
+                       final List<Move> blackStandardLegals) {
         super(board, whiteStandardLegals, blackStandardLegals);
     }
 

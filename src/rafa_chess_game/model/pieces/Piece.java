@@ -77,7 +77,7 @@ public abstract class Piece {
 
     public enum PieceType {
 
-        PAWN(100, "P") {
+        PAWN(100, "Pawn") {
             @Override
             public boolean isPawn() {
                 return true;
@@ -98,7 +98,7 @@ public abstract class Piece {
                 return false;
             }
         },
-        KNIGHT(320, "N") {
+        KNIGHT(320, "Knight") {
             @Override
             public boolean isPawn() {
                 return false;
@@ -119,7 +119,7 @@ public abstract class Piece {
                 return false;
             }
         },
-        BISHOP(350, "B") {
+        BISHOP(350, "Bishop") {
             @Override
             public boolean isPawn() {
                 return false;
@@ -140,7 +140,7 @@ public abstract class Piece {
                 return false;
             }
         },
-        ROOK(500, "R") {
+        ROOK(500, "Rook") {
             @Override
             public boolean isPawn() {
                 return false;
@@ -161,7 +161,7 @@ public abstract class Piece {
                 return false;
             }
         },
-        QUEEN(900, "Q") {
+        QUEEN(900, "Queen") {
             @Override
             public boolean isPawn() {
                 return false;
@@ -182,7 +182,7 @@ public abstract class Piece {
                 return false;
             }
         },
-        KING(20000, "K") {
+        KING(20000, "King") {
             @Override
             public boolean isPawn() {
                 return false;

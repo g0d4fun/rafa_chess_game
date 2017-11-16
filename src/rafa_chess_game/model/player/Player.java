@@ -1,6 +1,5 @@
 package rafa_chess_game.model.player;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,16 +15,15 @@ public abstract class Player {
 
     protected final Board board;
     protected final King playerKing;
-    protected final Collection<Move> legalMoves;
+    protected final List<Move> legalMoves;
     protected final boolean isInCheck;
 
-    Player(final Board board,
-           final Collection<Move> playerLegals,
-           final Collection<Move> opponentLegals) {
+    Player(Board board, List<Move> playerLegals, List<Move> opponentLegals) {
         this.board = board;
         this.playerKing = establishKing();
         this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(), opponentLegals).isEmpty();
-        playerLegals.addAll(calculateKingCastles(playerLegals, opponentLegals));
+        
+        //playerLegals.addAll(calculateKingCastles(playerLegals, opponentLegals));
         this.legalMoves = playerLegals;
     }
 
@@ -38,7 +36,7 @@ public abstract class Player {
     }
 
     public boolean isInCheckMate() {
-       return this.isInCheck && !hasEscapeMoves();
+        return this.isInCheck && !hasEscapeMoves();
     }
 
     public boolean isInStaleMate() {
@@ -62,16 +60,16 @@ public abstract class Player {
     }
 
     private King establishKing() {
-        for(final Piece piece : getActivePieces()) {
-            if(piece.getPieceType().isKing()) {
+        for (final Piece piece : getActivePieces()) {
+            if (piece.getPieceType().isKing()) {
                 return (King) piece;
             }
         }
-        throw new RuntimeException("Should not reach here! " +this.getAlliance()+ " king could not be established!");
+        throw new RuntimeException("Should not reach here! " + this.getAlliance() + " king could not be established!");
     }
 
     private boolean hasEscapeMoves() {
-        for(final Move move : getLegalMoves()) {
+        for (final Move move : getLegalMoves()) {
             final MoveTransition transition = makeMove(move);
             if (transition.getMoveStatus().isDone()) {
                 return true;
@@ -85,7 +83,7 @@ public abstract class Player {
     }
 
     static Collection<Move> calculateAttacksOnTile(final int tile,
-                                                   final Collection<Move> moves) {
+            final Collection<Move> moves) {
         final List<Move> attackMoves = new ArrayList<>();
         for (final Move move : moves) {
             if (tile == move.getDestinationCoordinate()) {
@@ -114,9 +112,12 @@ public abstract class Player {
     }
 
     public abstract Collection<Piece> getActivePieces();
+
     public abstract Alliance getAlliance();
+
     public abstract Player getOpponent();
+
     protected abstract Collection<Move> calculateKingCastles(Collection<Move> playerLegals,
-                                                             Collection<Move> opponentLegals);
+            Collection<Move> opponentLegals);
 
 }

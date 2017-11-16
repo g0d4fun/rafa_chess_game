@@ -5,6 +5,7 @@
  */
 package rafa_chess_game.gui;
 
+import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 import rafa_chess_game.gui.Table.TilePanel;
@@ -30,9 +31,7 @@ public enum BoardDirection {
     FLIPPED{
         @Override
         public List<TilePanel> traverse(List<TilePanel> boardTiles) {
-            List<TilePanel> reversedList = boardTiles;
-            Collections.reverse(reversedList);
-            return reversedList;
+            return Lists.reverse(boardTiles);
         }
 
         @Override

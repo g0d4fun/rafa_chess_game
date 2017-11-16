@@ -32,6 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import rafa_chess_game.model.Model;
 import rafa_chess_game.model.board.Board;
 import rafa_chess_game.model.board.BoardUtils;
 import rafa_chess_game.model.board.Move;
@@ -45,9 +46,9 @@ import rafa_chess_game.model.pieces.Piece;
  */
 public class Table implements UIConstants {
 
+    public Model model;
     private JFrame gameFrame;
     protected BoardPanel boardPanel;
-    protected Board chessBoard;
 
     private Tile sourceTile;
     private Tile destinationTile;
@@ -57,14 +58,14 @@ public class Table implements UIConstants {
 
     public Table() {
         setUpLookAndFeel();
-
+        model = new Model();
         this.gameFrame = new JFrame("Chess Game");
         JMenuBar tableMenuBar = setUpMenuBar();
 
         this.gameFrame.setJMenuBar(tableMenuBar);
         this.gameFrame.setSize(FRAME_DIMENSION);
 
-        this.chessBoard = Board.createStandardBoard();
+        model.startNewGame();
 
         this.boardPanel = new BoardPanel(BOARD_DIMENSION);
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
@@ -92,7 +93,7 @@ public class Table implements UIConstants {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boardDirection = boardDirection.opposite();
-                boardPanel.drawBoard(chessBoard);
+                boardPanel.drawBoard(model.getBoard());
             }
         });
         preferencesMenu.add(flipBoardMenuItem); 
@@ -169,9 +170,9 @@ public class Table implements UIConstants {
                 int row = i - (column * 8);
                 TilePanel tilePanel;
                 if ((row % 2) == (column % 2)) { // Light Color
-                    tilePanel = new TilePanel(this, i, false, chessBoard);
+                    tilePanel = new TilePanel(this, i, false, model.getBoard());
                 } else { // Dark Color
-                    tilePanel = new TilePanel(this, i, true, chessBoard);
+                    tilePanel = new TilePanel(this, i, true, model.getBoard());
                 }
 
                 this.boardTiles.add(tilePanel);
@@ -226,7 +227,7 @@ public class Table implements UIConstants {
             setUpTileColor(isDarkTile);
             setUpTilePieceIcon(board);
 //            highlightTileBorder(board);
-            highlightLegals(board);
+            highlightLegals();
 //            highlightAIMove();
             validate();
             repaint();
@@ -235,10 +236,10 @@ public class Table implements UIConstants {
         private void setUpTileColor(boolean isDarkTile) {
             if (sourceTile != null) {
                 if (isDarkTile && tileId == sourceTile.getTileCoordinate() &&
-                        chessBoard.currentPlayer().getAlliance() == chessBoard.getTile(tileId).getPiece().getPieceAllegiance()) {
+                        model.getCurrentPlayerAlliance() == model.getAlliancePieceByTileId(tileId)) {
                     setBackground(DARK_TILE_COLOR_HEX_ON_CLICK);
                 } else if (!isDarkTile && tileId == sourceTile.getTileCoordinate() &&
-                        chessBoard.currentPlayer().getAlliance() == chessBoard.getTile(tileId).getPiece().getPieceAllegiance()) {
+                        model.getCurrentPlayerAlliance() == model.getAlliancePieceByTileId(tileId)) {
                     setBackground(LIGHT_TILE_COLOR_HEX_ON_CLICK);
                 }
                 return;
@@ -264,20 +265,15 @@ public class Table implements UIConstants {
                         System.out.println("HERE LEFT");
                         if (sourceTile == null) {
                             // firstClick
-                            sourceTile = chessBoard.getTile(tileId);
+                            sourceTile = model.getTile(tileId);
                             humanMovedPiece = sourceTile.getPiece();
                             if (humanMovedPiece == null) {
                                 sourceTile = null;
                             }
                         } else {
                             // secondClick 
-                            destinationTile = chessBoard.getTile(tileId);
-                            Move move = Move.MoveFactory.createMove(chessBoard,
-                                    sourceTile.getTileCoordinate(), destinationTile.getTileCoordinate());
-                            MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
-                            if (transition.getMoveStatus().isDone()) {
-                                chessBoard = transition.getToBoard();
-                            }
+                            destinationTile = model.getTile(tileId);
+                            System.out.println("Move Status: " + model.makeMove(sourceTile, destinationTile));
                             sourceTile = null;
                             destinationTile = null;
                             humanMovedPiece = null;
@@ -287,7 +283,7 @@ public class Table implements UIConstants {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            boardPanel.drawBoard(chessBoard);
+                            boardPanel.drawBoard(model.getBoard());
                         }
                     });
 
@@ -327,11 +323,11 @@ public class Table implements UIConstants {
                 }
             }
         }
-        
+        */
         private void highlightTileBorder(final Board board) {
 
             if(humanMovedPiece != null &&
-               humanMovedPiece.getPieceAlliance() == board.getCurrentPlayer().getAlliance() &&
+               humanMovedPiece.getPieceAllegiance() == board.currentPlayer().getAlliance() &&
                humanMovedPiece.getPiecePosition() == this.tileId) {
                 setBorder(BorderFactory.createLineBorder(Color.cyan));
             } else {
@@ -339,10 +335,10 @@ public class Table implements UIConstants {
             }
 
         } 
-        */
-        private void highlightLegals(final Board board) {
+        
+        private void highlightLegals() {
             if(highlighLegalMoves){
-                for(Move move : pieceLegalMoves(board)){
+                for(Move move : model.pieceLegalMoves(humanMovedPiece)){
                     if(move.getDestinationCoordinate() == this.tileId){
                         add(new JLabel(new ImageIcon(Pictures.getPicture(AIM_MOVE))));
                     }
@@ -350,17 +346,5 @@ public class Table implements UIConstants {
             }
         }
         
-        private Collection<Move> pieceLegalMoves(final Board board) {
-
-            if (humanMovedPiece != null && humanMovedPiece.getPieceAllegiance()
-                    == board.currentPlayer().getAlliance()) {
-
-                return humanMovedPiece.calculateLegalMoves(board);
-
-            }
-
-            return Collections.emptyList();
-
-        }
     }
 }
