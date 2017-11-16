@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rafa_chess_game.gui;
 
 import java.awt.BorderLayout;
@@ -18,69 +13,88 @@ import rafa_chess_game.model.MoveLog;
 import rafa_chess_game.model.board.Board;
 import rafa_chess_game.model.board.Move;
 
-/**
- *
- * @author henri
- */
-public class GameHistoryPanel extends JPanel {
+class GameHistoryPanel extends JPanel {
 
-    private final DataModel dataModel;
+    private final DataModel model;
     private final JScrollPane scrollPane;
+    private static final Dimension HISTORY_PANEL_DIMENSION = new Dimension(250, 40);
 
-    private static final Dimension HISTORY_PANEL_DIMENSION = new Dimension(100, 400);
-
-    public GameHistoryPanel() {
+    GameHistoryPanel() {
         this.setLayout(new BorderLayout());
-        dataModel = new DataModel();
-        JTable table = new JTable(dataModel);
+        this.model = new DataModel();
+        final JTable table = new JTable(model);
         table.setRowHeight(15);
-        scrollPane = new JScrollPane(table);
+        this.scrollPane = new JScrollPane(table);
         scrollPane.setColumnHeaderView(table.getTableHeader());
         scrollPane.setPreferredSize(HISTORY_PANEL_DIMENSION);
         this.add(scrollPane, BorderLayout.CENTER);
         this.setVisible(true);
     }
 
-    public void redo(Board board, MoveLog moveHistory) {
+    void redo(final Board board,
+              final MoveLog moveHistory) {
         int currentRow = 0;
-        dataModel.clear();
-
-        for (Move move : moveHistory.getMoves()) {
-            if (move.getMovedPiece() == null) {
-                continue;
-            }
-            String moveText = move.toString();
+        this.model.clear();
+        for (final Move move : moveHistory.getMoves()) {
+            final String moveText = move.toString();
             if (move.getMovedPiece().getPieceAllegiance().isWhite()) {
-                dataModel.setValueAt(moveText, currentRow, 0);
-            } else if (move.getMovedPiece().getPieceAllegiance().isBlack()) {
-                dataModel.setValueAt(moveText, currentRow, 1);
+                this.model.setValueAt(moveText, currentRow, 0);
+            }
+            else if (move.getMovedPiece().getPieceAllegiance().isBlack()) {
+                this.model.setValueAt(moveText, currentRow, 1);
                 currentRow++;
             }
         }
 
-        if (moveHistory.getMoves().size() > 0) {
-            Move lastMove = moveHistory.getMoves().get(moveHistory.size() - 1);
-            String moveText = lastMove.toString();
-            if (lastMove.getMovedPiece() != null) {
-                if (lastMove.getMovedPiece().getPieceAllegiance().isWhite()) {
-                    this.dataModel.setValueAt(moveText + calculateCheckAndCheckMateHash(board), currentRow, 0);
-                } else if (lastMove.getMovedPiece().getPieceAllegiance().isBlack()) {
-                    this.dataModel.setValueAt(moveText + calculateCheckAndCheckMateHash(board), currentRow - 1, 1);
-                }
+        if(moveHistory.getMoves().size() > 0) {
+            final Move lastMove = moveHistory.getMoves().get(moveHistory.size() - 1);
+            final String moveText = lastMove.toString();
+
+            if (lastMove.getMovedPiece().getPieceAllegiance().isWhite()) {
+                this.model.setValueAt(moveText  + " " + calculateCheckAndCheckMateHash(board), currentRow, 0);
+            }
+            else if (lastMove.getMovedPiece().getPieceAllegiance().isBlack()) {
+                this.model.setValueAt(moveText + " " + calculateCheckAndCheckMateHash(board), currentRow - 1, 1);
             }
         }
 
-        JScrollBar vertical = scrollPane.getVerticalScrollBar();
+        final JScrollBar vertical = scrollPane.getVerticalScrollBar();
         vertical.setValue(vertical.getMaximum());
+
     }
 
-    private String calculateCheckAndCheckMateHash(Board board) {
-        if (board.currentPlayer().isInCheckMate()) {
+    private static String calculateCheckAndCheckMateHash(final Board board) {
+        if(board.currentPlayer().isInCheckMate()) {
             return "#";
-        } else if (board.currentPlayer().isInCheck()) {
+        } else if(board.currentPlayer().isInCheck()) {
             return "+";
         }
-        return " ";
+        return "";
+    }
+
+    private static class Row {
+
+        private String whiteMove;
+        private String blackMove;
+
+        Row() {
+        }
+
+        public String getWhiteMove() {
+            return this.whiteMove;
+        }
+
+        public String getBlackMove() {
+            return this.blackMove;
+        }
+
+        public void setWhiteMove(final String move) {
+            this.whiteMove = move;
+        }
+
+        public void setBlackMove(final String move) {
+            this.blackMove = move;
+        }
 
     }
 
@@ -89,7 +103,7 @@ public class GameHistoryPanel extends JPanel {
         private final List<Row> values;
         private static final String[] NAMES = {"White", "Black"};
 
-        public DataModel() {
+        DataModel() {
             this.values = new ArrayList<>();
         }
 
@@ -100,10 +114,10 @@ public class GameHistoryPanel extends JPanel {
 
         @Override
         public int getRowCount() {
-            if (values == null) {
+            if(this.values == null) {
                 return 0;
             }
-            return values.size();
+            return this.values.size();
         }
 
         @Override
@@ -112,71 +126,44 @@ public class GameHistoryPanel extends JPanel {
         }
 
         @Override
-        public Object getValueAt(int row, int column) {
-            Row currentRow = this.values.get(row);
-            if (column == 0) {
+        public Object getValueAt(final int row, final int col) {
+            final Row currentRow = this.values.get(row);
+            if(col == 0) {
                 return currentRow.getWhiteMove();
-            } else if (column == 1) {
+            } else if (col == 1) {
                 return currentRow.getBlackMove();
             }
-
             return null;
         }
 
         @Override
-        public void setValueAt(Object aValue, int row, int column) {
-            Row currentRow;
-            if (values.size() <= row) {
+        public void setValueAt(final Object aValue,
+                               final int row,
+                               final int col) {
+            final Row currentRow;
+            if(this.values.size() <= row) {
                 currentRow = new Row();
-                values.add(currentRow);
+                this.values.add(currentRow);
             } else {
-                currentRow = values.get(row);
+                currentRow = this.values.get(row);
             }
-
-            if (column == 0) {
+            if(col == 0) {
                 currentRow.setWhiteMove((String) aValue);
                 fireTableRowsInserted(row, row);
-            } else if (column == 1) {
-                currentRow.setBlackMove((String) aValue);
-                fireTableCellUpdated(row, column);
+            } else  if(col == 1) {
+                currentRow.setBlackMove((String)aValue);
+                fireTableCellUpdated(row, col);
             }
         }
 
         @Override
-        public Class<?> getColumnClass(int columnIndex) {
+        public Class<?> getColumnClass(final int col) {
             return Move.class;
         }
 
         @Override
-        public String getColumnName(int column) {
-            return NAMES[column];
+        public String getColumnName(final int col) {
+            return NAMES[col];
         }
-
-    }
-
-    private static class Row {
-
-        private String whiteMove;
-        private String blackMove;
-
-        public Row() {
-        }
-
-        public String getWhiteMove() {
-            return whiteMove;
-        }
-
-        public void setWhiteMove(String whiteMove) {
-            this.whiteMove = whiteMove;
-        }
-
-        public String getBlackMove() {
-            return blackMove;
-        }
-
-        public void setBlackMove(String blackMove) {
-            this.blackMove = blackMove;
-        }
-
     }
 }

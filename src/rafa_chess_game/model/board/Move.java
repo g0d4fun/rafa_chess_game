@@ -218,7 +218,7 @@ public abstract class Move {
 
         @Override
         public String toString() {
-            return movedPiece.getPieceType().toString() + disambiguationFile() +
+            return movedPiece.getPieceType().toString() + " " + disambiguationFile() + " " + 
                    BoardUtils.INSTANCE.getPositionAtCoordinate(this.destinationCoordinate);
         }
 

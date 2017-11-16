@@ -21,11 +21,11 @@ import rafa_chess_game.model.pieces.Piece;
  * @author henri
  */
 public class Model implements Observable {
-    
+
     protected Board chessBoard;
     protected MoveTransition transition;
     protected MoveLog moveLog;
-    
+
     public Model() {
         moveLog = new MoveLog();
     }
@@ -45,15 +45,15 @@ public class Model implements Observable {
     public MoveStatus makeMove(Tile sourceTile, Tile destinationTile) {
         Move move = Move.MoveFactory.createMove(chessBoard,
                 sourceTile.getTileCoordinate(), destinationTile.getTileCoordinate());
-        
+
         MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
-        
+
         if (transition.getMoveStatus().isDone()) {
             chessBoard = transition.getToBoard();
+            // if move was valid, add to MoveLog
+            moveLog.addMoves(move);
         }
-        // Add move to the moveLog
-        moveLog.addMoves(move);
-        
+
         return transition.getMoveStatus();
     }
 
@@ -68,16 +68,16 @@ public class Model implements Observable {
                 || sourceTileId < 0 || destinationTileId < 0) {
             return MoveStatus.ILLEGAL_MOVE;
         }
-        
+
         return makeMove(getTile(sourceTileId), getTile(destinationTileId));
     }
-    
+
     public Collection<Move> pieceLegalMoves(Piece pieceToMove) {
-        
+
         if (pieceToMove != null && pieceToMove.getPieceAllegiance()
                 == chessBoard.currentPlayer().getAlliance()) {
             return pieceToMove.calculateLegalMoves(chessBoard);
-            
+
         }
         return Collections.emptyList();
     }
@@ -86,28 +86,28 @@ public class Model implements Observable {
     public Board getBoard() {
         return chessBoard;
     }
-    
+
     public Tile getTile(int tileId) {
         return chessBoard.getTile(tileId);
     }
-    
+
     public Alliance getCurrentPlayerAlliance() {
         return chessBoard.currentPlayer().getAlliance();
     }
-    
+
     public Alliance getAlliancePieceByTileId(int tileId) {
         return chessBoard.getTile(tileId).getPiece().getPieceAllegiance();
     }
-    
+
     public MoveLog getMoveLog() {
         return moveLog;
     }
-    
+
     @Override
     public void addListener(InvalidationListener listener) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void removeListener(InvalidationListener listener) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
